@@ -1,8 +1,69 @@
-# Interactive 2-Body & N-Body Orbital Mechanics Simulator
+# ME206 Assignment 4: Simulations
 
-An interactive orbital mechanics simulator built from scratch in Python and Pygame for the **ME206** assignment. It demonstrates Newtonian gravity, orbital maneuvers, gravitational assists, and binary systems in real time.
+This repository contains the source code for both simulations in the assignment:
 
-## Physics & Features
+| Part | Simulation | File | Built with |
+|---|---|---|---|
+| A | Interactive 2-Body & N-Body Orbital Mechanics Simulator | `twobody.py` | Python, Pygame |
+| B | Unitree G1 humanoid tossing an apple between its hands | `main.py` | Python, MuJoCo, NumPy |
+
+---
+
+## Repository structure
+
+```
+.
+├── twobody.py         # Part A: orbital mechanics simulator
+├── main.py            # Part B: G1 apple toss (simulation, planning, control)
+├── scene.xml          # Part B: scene (floor, light, table, apple; includes the G1)
+├── g1/
+│   └── g1.xml         # Part B: Unitree G1 model (29 DOF, rev 1.0)
+├── assets/            # Part B: G1 mesh files (*.STL) used by g1.xml
+└── README.md
+```
+
+## Installation
+
+1. Install Python 3.10 or newer.
+2. Clone the repository and enter it:
+   ```bash
+   git clone https://github.com/Manan-06/MUJOCO-Simulation-and-2-Body-Problem-Simulator.git
+   cd MUJOCO-Simulation-and-2-Body-Problem-Simulator
+   ```
+3. (Optional) Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   # Windows:
+   venv\Scripts\activate
+   # macOS/Linux:
+   source venv/bin/activate
+   ```
+4. Install the dependencies for both parts:
+   ```bash
+   pip install pygame mujoco numpy
+   ```
+
+   | Package | Used by | Version |
+   |---|---|---|
+   | `pygame` | Part A | 2.x |
+   | `mujoco` | Part B | 3.x |
+   | `numpy` | Part B | 1.24 or newer |
+
+## Quick start
+
+```bash
+python twobody.py           # Part A: opens the interactive orbital simulator
+python main.py              # Part B: opens the MuJoCo viewer
+python main.py --headless   # Part B: runs without a window and prints a summary
+```
+
+---
+
+## Part A: Interactive 2-Body & N-Body Orbital Mechanics Simulator
+
+An interactive orbital mechanics simulator built from scratch in Python and Pygame. It demonstrates Newtonian gravity, orbital maneuvers, gravitational assists, and binary systems in real time.
+
+### Physics & Features
 
 * **Gravitational Engine:** Computes pairwise Newtonian gravitational forces ($F = G \frac{m_1 m_2}{r^2}$) with radius-based softening to prevent infinite acceleration singularities.
 * **Numerical Integration:** Uses Semi-Implicit Euler integration with **dynamic sub-stepping** (up to 150 sub-steps per frame), preserving orbital stability even at **50x time acceleration**.
@@ -11,39 +72,20 @@ An interactive orbital mechanics simulator built from scratch in Python and Pyga
 * **Precision Maneuver Tools:** Vector projection snapping (`CTRL`) locks velocity impulses to exact prograde or retrograde directions for executing Hohmann transfers.
 * **Interactive Camera & Telemetry:** World-space zooming (cursor-anchored), camera panning, and a persistent telemetry HUD for tracking mass, speed, and net force.
 
-## Software Requirements
+### Software Requirements
 
-* **Python:** 3.8 or higher
-* **Dependencies:** `pygame` (see `requirements.txt`)
+* **Python:** 3.10 or higher
+* **Dependencies:** `pygame` (see [Installation](#installation))
 
-## How to Run the Simulation
+### How to Run the Simulation
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/](https://github.com/)<your-username>/orbital-mechanics-simulator.git
-   cd orbital-mechanics-simulator
-   ```
+From the repository folder (after [Installation](#installation)):
 
-2. **(Optional) Create and activate a virtual environment:**
-   ```bash
-   python -m venv venv
-   # On Windows:
-   venv\Scripts\activate
-   # On macOS/Linux:
-   source venv/bin/activate
-   ```
+```bash
+python twobody.py
+```
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Launch the simulator:**
-   ```bash
-   python simulator.py
-   ```
-
-## Controls
+### Controls
 
 | Input | Action |
 | :--- | :--- |
@@ -61,7 +103,7 @@ An interactive orbital mechanics simulator built from scratch in Python and Pyga
 | **T** | Clear orbital trails |
 | **C** | Reset scene |
 
-## Demonstrated Concepts
+### Demonstrated Concepts
 
 The simulator is used to reproduce and visualize the following orbital mechanics phenomena:
 * **Trochoidal Trajectories:** Absolute path traced by a planet orbiting a moving star.
@@ -70,7 +112,9 @@ The simulator is used to reproduce and visualize the following orbital mechanics
 * **Gravitational Deflection:** Hyperbolic trajectory bending of a rogue body.
 * **Elliptical Orbits & Hohmann Transfers:** Two-burn orbital raising using prograde-locked impulses.
 
-# Unitree G1 Apple Toss (MuJoCo)
+---
+
+## Part B: Unitree G1 Apple Toss (MuJoCo)
 
 A MuJoCo simulation of a Unitree G1 humanoid that picks an apple up from a table, turns its palm up, tosses the apple back and forth between its hands, and puts it back on the table.
 
@@ -78,41 +122,30 @@ Once thrown, the apple is a free rigid body that follows a parabolic path under 
 
 ---
 
-## 1. Requirements
+### B1. Requirements
 
 | Software | Version |
 |---|---|
 | Python | 3.10 or newer |
-| MuJoCo (Python bindings) | 3.x (tested with a recent 3.x release) |
+| MuJoCo (Python bindings) | 3.x |
 | NumPy | 1.24 or newer |
 
-Install the dependencies:
-
-```bash
-pip install mujoco numpy
-```
-
-Works on Windows, Linux and macOS. On macOS, the interactive viewer must be started with `mjpython` instead of `python` (see section 4).
+Install with `pip install mujoco numpy` (see [Installation](#installation)). On macOS, the interactive viewer must be started with `mjpython` instead of `python` (see B4).
 
 ---
 
-## 2. Repository structure
+### B2. Files used
 
-```
-.
-├── main.py          # simulation, planning and control (run this)
-├── scene.xml        # scene: includes the G1, adds floor, light, table and apple
-├── g1/
-│   ├── g1.xml       # Unitree G1 model (29 DOF, rev 1.0)
-│   └── assets/      # G1 mesh files (*.STL) used by g1.xml
-└── README.md
-```
+- `main.py`: simulation, planning and control (run this)
+- `scene.xml`: includes the G1 and adds the floor, light, table and apple
+- `g1/g1.xml`: Unitree G1 model (29 DOF, rev 1.0)
+- `assets/*.STL`: the G1 mesh files. They sit next to `scene.xml`, not inside `g1/`, because MuJoCo looks for meshes relative to the main scene file
 
 `scene.xml` includes the robot with `<include file="g1/g1.xml"/>`, so keep the `g1` folder next to it. `main.py` looks for `scene.xml` in its own folder by default.
 
 ---
 
-## 3. How to run
+### B3. How to run
 
 From the repository folder:
 
@@ -127,7 +160,7 @@ python main.py --speed 0.3
 python main.py --headless
 ```
 
-### Command-line options
+#### Command-line options
 
 | Option | Default | Meaning |
 |---|---|---|
@@ -141,7 +174,7 @@ python main.py --headless
 
 ---
 
-## 4. Expected output
+### B4. Expected output
 
 `python main.py --headless` prints the robot setup, each event, and a summary. A successful run looks like this:
 
@@ -170,9 +203,9 @@ macOS: run the viewer with `mjpython main.py` (installed with the `mujoco` packa
 
 ---
 
-## 5. How it works
+### B5. How it works
 
-### Sequence
+#### Sequence
 1. **Reach and grasp:** the right hand approaches the apple from the side, palm facing it.
 2. **Carry:** the hand lifts the apple and turns the palm up.
 3. **Toss:** the hand dips, then accelerates upward and across and releases the apple at the planned velocity.
@@ -180,7 +213,7 @@ macOS: run the viewer with `mjpython main.py` (installed with the `mujoco` packa
 5. **Catch:** the other palm meets the apple at its predicted position and moves with it briefly to soften the catch.
 6. Steps 3 to 5 repeat, alternating hands; the apple is then put back on the table.
 
-### Physics of the toss
+#### Physics of the toss
 The flight is projectile motion. For a hold point $S_f$ on the throwing side, a hold point $S_t$ on the catching side, and a flight time $T$:
 
 $$S_t = S_f + v_0 T + \tfrac{1}{2} g T^2 \;\;\Rightarrow\;\; v_0 = \frac{S_t - S_f - \tfrac{1}{2} g T^2}{T}$$
@@ -191,33 +224,33 @@ $$C = P_{release} + v_0 T + \tfrac{1}{2} g T^2, \qquad v_{catch} = v_0 + gT$$
 
 The throw itself is a constant-acceleration stroke: the hand accelerates over 0.18 m to reach the release speed (about 2.6 m/s, roughly 18 m/s² of acceleration), releases, then decelerates over a short follow-through.
 
-### Motion planning
+#### Motion planning
 Each hand follows a path in Cartesian space:
 - **Minimum-jerk segments** for smooth reaching, carrying and returning.
 - **Constant-acceleration segments** for the throw stroke and the catch.
 
-### Inverse kinematics
+#### Inverse kinematics
 Each 7-joint arm is controlled for hand **position** (3 values) and **palm direction** (2 values) every control step, using damped least-squares inverse kinematics:
 
 $$\dot q = J^{+}(\dot x_{des} + K e) + (I - J^{+}J)\,k_{null}(q_{home} - q)$$
 
 The extra joint freedom (the null space) gently pulls the arm toward its natural standing posture, and joint limits are enforced.
 
-### Joint control (computed torque)
+#### Joint control (computed torque)
 The joint targets from IK are tracked with a computed-torque controller:
 
 $$\tau = M(q)\,\big(\ddot q_{des} + K_p (q_{des} - q) + K_d (\dot q_{des} - \dot q)\big) + C(q,\dot q) + G(q)$$
 
 where $M$ is the mass matrix and $C + G$ are the Coriolis and gravity terms, all taken from MuJoCo. The torques are sent through the G1 model's own actuators, respecting their force limits. Gains: $K_p = 400$, $K_d = 40$ (critically damped).
 
-### Modelling simplifications
+#### Modelling simplifications
 - **Fixed pelvis:** the robot's base is held still, like a robot on a test stand, so no balance controller is needed.
 - **Virtual grasp:** the G1 rubber hand cannot close around a sphere, so while held the apple is attached to the palm. After release it is a normal physical body that collides with the table and floor.
 - **Collisions:** the arms do not collide with the robot's own body. MuJoCo collides meshes using their convex hulls, and the G1's torso hull would otherwise trap the arms. The arms still collide with the table and floor.
 
 ---
 
-## 6. Tunable parameters
+### B6. Tunable parameters
 
 At the top of `main.py`:
 
@@ -231,12 +264,12 @@ At the top of `main.py`:
 
 ---
 
-## 7. Troubleshooting
+### B7. Troubleshooting
 
 | Problem | Fix |
 |---|---|
 | `Scene file not found` | Run from the repository folder, or pass `--scene path/to/scene.xml` |
-| Mesh files not found | Make sure `g1/assets/` contains the `.STL` files referenced in `g1.xml` |
+| Mesh files not found | Make sure the `assets/` folder (next to `scene.xml`) contains the `.STL` files referenced in `g1.xml` |
 | Apple sits on the back of the hand | Run with `--flip-palm` |
 | `launch_passive` error on macOS | Use `mjpython main.py` |
 | A catch fails | Increase `--flight-time` (e.g. `0.6`) to give the catching hand more time |
