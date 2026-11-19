@@ -1,0 +1,27 @@
+<mujoco>
+    <compiler angle="radian"/>
+    
+    <!-- Import the Unitree G1 model -->
+    <include file="g1/g1.xml"/>
+
+    <worldbody>
+        <!-- Basic lighting -->
+        <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+
+        <!-- Collision floor -->
+        <geom type="plane" size="0 0 0.05" rgba="0.8 0.9 0.8 1"/>
+        
+        <!-- Table / Pedestal for the apple -->
+        <geom name="table" type="box" pos="0.3 0.0 0.4" size="0.1 0.1 0.4" rgba="0.6 0.5 0.4 1"/>
+
+        <!-- The Apple (Free body) -->
+        <body name="apple" pos="0.3 0.0 0.84">
+            <!-- Free joint allows 6DOF movement (translation + rotation) -->
+            <joint type="free"/>
+            <geom type="sphere" size="0.04" mass="0.15" rgba="0.9 0.1 0.1 1" friction="1.5 0.005 0.0001"/>
+            
+            <!-- Spatial Site for Inverse Kinematics tracking -->
+            <site name="apple_target" pos="0 0 0" size="0.015" rgba="1 1 1 1"/>
+        </body>
+    </worldbody>
+</mujoco>
